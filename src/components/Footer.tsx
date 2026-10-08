@@ -1,4 +1,4 @@
-import { Linkedin, Mail, ArrowUp } from 'lucide-react';
+import { Linkedin, Mail, ArrowUp, FileType, FileText } from 'lucide-react';
 import { personalInfo, navLinks } from '@/data/portfolio';
 
 /**
@@ -66,13 +66,24 @@ export default function Footer() {
                 <Mail size={20} />
               </a>
             </div>
-            <a
-              href={personalInfo.cvPath}
-              download
-              className="inline-flex items-center gap-2 text-sm text-blue-300 hover:text-blue-200 font-medium transition-colors"
-            >
-              Download CV
-            </a>
+            <div className="flex flex-col gap-2">
+              <a
+                href={personalInfo.cvPath}
+                download
+                className="inline-flex items-center gap-2 text-sm text-blue-300 hover:text-blue-200 font-medium transition-colors"
+              >
+                <FileType size={16} className="text-red-400" />
+                Download CV (PDF)
+              </a>
+              <a
+                href={personalInfo.cvPathWord}
+                download
+                className="inline-flex items-center gap-2 text-sm text-blue-300 hover:text-blue-200 font-medium transition-colors"
+              >
+                <FileText size={16} />
+                Download CV (Word)
+              </a>
+            </div>
           </div>
         </div>
 

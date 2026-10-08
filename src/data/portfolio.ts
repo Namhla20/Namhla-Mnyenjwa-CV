@@ -16,6 +16,7 @@ export const personalInfo = {
   linkedin: 'https://linkedin.com/in/mnyenjwa-namhla-4a022a1a6',
   linkedinDisplay: 'linkedin.com/in/mnyenjwa-namhla-4a022a1a6',
   cvPath: '/Namhla-Mnyenjwa-CV.pdf',
+  cvPathWord: '/Namhla-Mnyenjwa-CV.docx',
 };
 
 export const aboutBio = [

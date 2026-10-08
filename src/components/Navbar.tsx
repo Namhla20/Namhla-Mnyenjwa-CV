@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Menu, X, Download } from 'lucide-react';
+import { useEffect, useState, useRef } from 'react';
+import { Menu, X, Download, ChevronDown, FileText, FileType } from 'lucide-react';
 import { navLinks, personalInfo } from '@/data/portfolio';
 
 /**
@@ -12,6 +12,8 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [cvOpen, setCvOpen] = useState(false);
+  const cvRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => {
@@ -38,6 +40,17 @@ export default function Navbar() {
   }, [isOpen]);
 
   const handleNavClick = () => setIsOpen(false);
+
+  // Close the CV dropdown when clicking outside of it
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      if (cvRef.current && !cvRef.current.contains(e.target as Node)) {
+        setCvOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', onClick);
+    return () => document.removeEventListener('mousedown', onClick);
+  }, []);
 
   return (
     <header
@@ -83,16 +96,49 @@ export default function Navbar() {
             })}
           </ul>
 
-          {/* ---- CV button + mobile hamburger ---- */}
+          {/* ---- CV dropdown + mobile hamburger ---- */}
           <div className="flex items-center gap-3">
-            <a
-              href={personalInfo.cvPath}
-              download
-              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-700 text-white text-sm font-semibold hover:bg-blue-800 active:scale-95 transition-all shadow-sm hover:shadow-md"
-            >
-              <Download size={16} />
-              Download CV
-            </a>
+            {/* Desktop CV dropdown */}
+            <div ref={cvRef} className="relative hidden sm:block">
+              <button
+                type="button"
+                onClick={() => setCvOpen(!cvOpen)}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-700 text-white text-sm font-semibold hover:bg-blue-800 active:scale-95 transition-all shadow-sm hover:shadow-md"
+                aria-expanded={cvOpen}
+                aria-haspopup="menu"
+              >
+                <Download size={16} />
+                Download CV
+                <ChevronDown size={14} className={`transition-transform ${cvOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {cvOpen && (
+                <div
+                  className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-neutral-200 overflow-hidden z-50"
+                  role="menu"
+                >
+                  <a
+                    href={personalInfo.cvPath}
+                    download
+                    onClick={() => setCvOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 text-sm text-navy-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                    role="menuitem"
+                  >
+                    <FileType size={18} className="text-red-500" />
+                    <span>PDF</span>
+                  </a>
+                  <a
+                    href={personalInfo.cvPathWord}
+                    download
+                    onClick={() => setCvOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 text-sm text-navy-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-t border-neutral-100"
+                    role="menuitem"
+                  >
+                    <FileText size={18} className="text-blue-600" />
+                    <span>Word (.docx)</span>
+                  </a>
+                </div>
+              )}
+            </div>
 
             <button
               type="button"
@@ -130,15 +176,25 @@ export default function Navbar() {
                 </li>
               );
             })}
-            <li className="pt-2">
+            <li className="pt-2 space-y-2">
+              <p className="px-1 text-xs font-semibold text-navy-400 uppercase tracking-wider">Download CV</p>
               <a
                 href={personalInfo.cvPath}
                 download
                 onClick={handleNavClick}
                 className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg bg-blue-700 text-white text-base font-semibold hover:bg-blue-800 transition-colors"
               >
-                <Download size={18} />
-                Download CV
+                <FileType size={18} />
+                PDF
+              </a>
+              <a
+                href={personalInfo.cvPathWord}
+                download
+                onClick={handleNavClick}
+                className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg bg-white text-blue-700 border-2 border-blue-200 text-base font-semibold hover:bg-blue-50 transition-colors"
+              >
+                <FileText size={18} />
+                Word (.docx)
               </a>
             </li>
           </ul>

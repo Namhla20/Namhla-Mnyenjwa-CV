@@ -1,4 +1,4 @@
-import { ArrowRight, Mail, Download, MapPin } from 'lucide-react';
+import { ArrowRight, Mail, Download, MapPin, FileText, FileType } from 'lucide-react';
 import { personalInfo } from '@/data/portfolio';
 
 /**
@@ -89,15 +89,24 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Secondary CV download button (home page) */}
-        <div className="reveal-fade mt-12 flex justify-center lg:justify-start">
+        {/* Secondary CV download buttons (home page) */}
+        <div className="reveal-fade mt-12 flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+          <span className="text-sm text-navy-400 self-center hidden sm:block">Download CV:</span>
           <a
             href={personalInfo.cvPath}
             download
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border-2 border-blue-200 bg-white text-blue-700 font-semibold text-sm hover:bg-blue-50 hover:border-blue-400 transition-all"
           >
-            <Download size={16} />
-            Download CV (PDF)
+            <FileType size={16} className="text-red-500" />
+            PDF
+          </a>
+          <a
+            href={personalInfo.cvPathWord}
+            download
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border-2 border-blue-200 bg-white text-blue-700 font-semibold text-sm hover:bg-blue-50 hover:border-blue-400 transition-all"
+          >
+            <FileText size={16} className="text-blue-600" />
+            Word (.docx)
           </a>
         </div>
       </div>
